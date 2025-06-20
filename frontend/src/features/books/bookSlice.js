@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/books';
-
+//const API_URL = 'http://localhost:5000/api/books';
+axios.get(`${import.meta.env.VITE_API_URL}/api/books`);
 // Async thunk to fetch all books
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
   async ({ search = '', category = '', page = 1, limit = 6 }) => {
     const query = new URLSearchParams({ search, category, page, limit }).toString();
-    const res = await axios.get(`http://localhost:5000/api/books?${query}`);
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/books?${query}`);
     return res.data; // Expected: { books: [], totalPages: N }
   }
 );
 
 // Async thunk to fetch a single book
 export const fetchBookById = createAsyncThunk('books/fetchBookById', async (id) => {
-  const response = await axios.get(`${API_URL}/${id}`);
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/books/${id}`);
   return response.data;
 });
 

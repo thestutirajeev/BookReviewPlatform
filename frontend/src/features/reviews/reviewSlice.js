@@ -4,7 +4,8 @@ import axios from 'axios';
 export const fetchReviews = createAsyncThunk(
   'reviews/fetchReviews',
   async (bookId) => {
-    const res = await axios.get(`http://localhost:5000/api/reviews?bookId=${bookId}`);
+    //const res = await axios.get(`http://localhost:5000/api/reviews?bookId=${bookId}`);
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/reviews?bookId=${bookId}`);
     return res.data;
   }
 );
@@ -13,8 +14,17 @@ export const submitReview = createAsyncThunk(
   'reviews/submitReview',
   async ({ bookId, rating, comment, token }, { rejectWithValue }) => {
     try {
-      const res = await axios.post(
+      /*const res = await axios.post(
         'http://localhost:5000/api/reviews',
+        { bookId, rating, comment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );*/
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/reviews`,
         { bookId, rating, comment },
         {
           headers: {

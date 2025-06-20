@@ -8,7 +8,8 @@ const userInfo = localStorage.getItem('user')
 
 export const login = createAsyncThunk('user/login', async ({ email, password }, thunkAPI) => {
   try {
-    const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
+    //const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, { email, password });
     const fullUser = { ...res.data.user, token: res.data.token}; //flatten
     localStorage.setItem('user', JSON.stringify(fullUser));
     return fullUser;
@@ -19,7 +20,8 @@ export const login = createAsyncThunk('user/login', async ({ email, password }, 
 
 export const register = createAsyncThunk('user/register', async (userData, thunkAPI) => {
   try {
-    const res = await axios.post('http://localhost:5000/api/users/register', userData);
+    //const res = await axios.post('http://localhost:5000/api/users/register', userData);
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, userData);
     const fullUser = { ...res.data.user, token: res.data.token }; //flatten
     // Store user data in localStorage
     localStorage.setItem('user', JSON.stringify(fullUser));
@@ -37,7 +39,12 @@ export const updateProfile = createAsyncThunk(
   'user/updateProfile',
   async ({ id, updatedData, token }, thunkAPI) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/users/${id}`, updatedData, {
+      /*const res = await axios.put(`http://localhost:5000/api/users/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });*/
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/users/${id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
