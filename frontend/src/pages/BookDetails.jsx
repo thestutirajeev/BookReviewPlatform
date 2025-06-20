@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBookById } from '../features/books/bookSlice';
-import { fetchReviews, submitReview } from '../features/reviews/reviewSlice';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBookById } from "../features/books/bookSlice";
+import { fetchReviews, submitReview } from "../features/reviews/reviewSlice";
+import { FaStar } from "react-icons/fa";
 
 export default function BookDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
   const { book, loading: bookLoading } = useSelector((state) => state.books);
-  const { reviews, loading: reviewsLoading } = useSelector((state) => state.reviews);
+  const { reviews, loading: reviewsLoading } = useSelector(
+    (state) => state.reviews
+  );
   const { user } = useSelector((state) => state.user);
 
   const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     dispatch(fetchBookById(id));
@@ -22,7 +25,7 @@ export default function BookDetails() {
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
-    if (!user) return alert('Login to review');
+    if (!user) return alert("Login to review");
 
     dispatch(
       submitReview({
@@ -33,7 +36,7 @@ export default function BookDetails() {
       })
     );
     setRating(5);
-    setComment('');
+    setComment("");
   };
 
   return (
@@ -43,13 +46,18 @@ export default function BookDetails() {
       ) : (
         <div className="max-w-3xl mx-auto bg-white shadow p-6 rounded">
           <img
-            src={book?.coverImage || 'https://img.freepik.com/free-vector/bike-guy-wattpad-book-cover_23-2149452163.jpg?t=st=1750344662~exp=1750348262~hmac=256691593a92acb66671ff4eda14ebbacd6f312e754c4581f95494da29209932&w=1380'}
+            src={
+              book?.coverImage ||
+              "https://img.freepik.com/free-vector/bike-guy-wattpad-book-cover_23-2149452163.jpg?t=st=1750344662~exp=1750348262~hmac=256691593a92acb66671ff4eda14ebbacd6f312e754c4581f95494da29209932&w=1380"
+            }
             alt={book?.title}
             className="w-full h-64 object-cover rounded mb-4"
           />
           <h2 className="text-2xl font-bold mb-2">{book?.title}</h2>
           <p className="text-gray-600 mb-1">Author: {book?.author}</p>
-          <p className="text-yellow-500 mb-4">⭐ {book?.averageRating?.toFixed(1)} / 5</p>
+          <p className="text-yellow-500 mb-4">
+            ⭐ {book?.averageRating?.toFixed(1)} / 5
+          </p>
           <p className="mb-4">{book?.description}</p>
         </div>
       )}
@@ -80,17 +88,17 @@ export default function BookDetails() {
           <form onSubmit={handleReviewSubmit} className="space-y-3">
             <div>
               <label className="block text-sm mb-1">Rating</label>
-              <select
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                className="border p-2 rounded w-full"
-              >
-                {[5, 4, 3, 2, 1].map((r) => (
-                  <option key={r} value={r}>
-                    {r} Star{r > 1 ? 's' : ''}
-                  </option>
+              <div className="flex space-x-1 text-2xl">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FaStar
+                    key={star}
+                    onClick={() => setRating(star)}
+                    className={`cursor-pointer transition ${
+                      star <= rating ? "text-yellow-500" : "text-gray-300"
+                    }`}
+                  />
                 ))}
-              </select>
+              </div>
             </div>
             <div>
               <label className="block text-sm mb-1">Comment</label>
