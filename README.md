@@ -4,6 +4,7 @@
 A full-stack web application where users can browse, search, and review books. It supports user authentication, book ratings, and an admin dashboard to manage books.
 
 🌐 **Live Demo**: [Book Review Platform](https://book-review-platform-plum.vercel.app/)
+![image](https://github.com/user-attachments/assets/2a2e7add-a6aa-4f45-882a-e26a6391236c)
 
 ---
 
